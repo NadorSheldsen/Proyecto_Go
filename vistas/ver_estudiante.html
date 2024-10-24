@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>Ver Estudiante</title>
+</head>
+<body>
+    <h1>Ver Estudiante</h1>
+    <p>Nombre: {{ .alumno.Name }}</p>
+    <p>Grupo: {{ .alumno.Group }}</p>
+    <p>Email: {{ .alumno.Email }}</p>
+    <form action="/bd/students/delete/{{ .alumno.ID }}" method="POST" style="display:inline">
+        <button type="submit">Eliminar</button>
+    </form>
+    <a href="/students/act/{{ .alumno.ID }}">Actualizar</a>
+    <a href="/students">Volver</a>
+</body>
+</html>
