@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones del Estudiante</title>
+</head>
+<body>
+    <h1>Calificaciones del Estudiante ID: {{ .student_id }}</h1>
+    <ul>
+        {{ range .grades }}
+        <li>
+            ID de Calificación: {{ .GradeID }} - Materia ID: {{ .SubjectID }} - Calificación: {{ .Grade }}
+            <form action="/grades/delete/{{ .GradeID }}" method="post" style="display:inline">
+                <button type="submit">Eliminar</button>
+            </form>
+            <a href="/grades/act/{{ .GradeID }}">Actualizar</a>
+        </li>
+        {{ else }}
+        <li>No hay calificaciones registradas para este estudiante.</li>
+        {{ end }}
+    </ul>
+    <a href="/grades/new">Crear Nueva Calificación</a>
+</body>
+</html>

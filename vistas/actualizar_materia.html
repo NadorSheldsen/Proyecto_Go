@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Materia</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Actualizar Materia: {{ .name }}</h1>
+        <form action="/escuela/subjects" method="post" class="mt-4">
+            <!-- Campo oculto para simular una solicitud PUT -->
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="subject_id" value="{{ .subject_id }}">
+            <div class="form-group">
+                <label for="nombre">Nombre de la Materia:</label>
+                <input type="text" id="nombre" name="name" class="form-control" required value="{{ .name }}">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Actualizar Materia</button>
+        </form>
+        <a href="/subjects" class="btn btn-link mt-3">Volver a la Lista de Materias</a>
+    </div>
+</body>
+</html>
+

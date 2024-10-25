@@ -1,0 +1,21 @@
+<html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Materia</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Crear Nueva Materia</h1>
+        <form action="/escuela/subjects" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="nombre">Nombre de la Materia:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Crear Materia</button>
+        </form>
+        <a href="/subjects" class="btn btn-link mt-3">Volver a la Lista de Materias</a>
+    </div>
+</body>
+</html>

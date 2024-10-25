@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obtener Materia</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Buscar Materia</h1>
+        <form action="/escuela/subjects" method="get" class="mt-4">
+            <div class="form-group">
+                <label for="subject_id">ID de la Materia:</label>
+                <input type="number" id="subject_id" name="subject_id" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Buscar Materia</button>
+        </form>
+
+        <!-- Sección para mostrar los detalles de la materia -->
+        <div id="subject-details" class="mt-5">
+            <h2>Detalles de la Materia</h2>
+            <p><strong>ID:</strong> {{ .subject_id }}</p>
+            <p><strong>Nombre:</strong> {{ .name }}</p>
+        </div>
+        
+        <a href="/subjects" class="btn btn-link mt-3">Volver a la Lista de Materias</a>
+    </div>
+</body>
+</html>
