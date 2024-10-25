@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Estudiante</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
 
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Actualizar Estudiante: {{ .alumno.Name }}</h1>
-        <form action="/bd/students/update/{{ .id }}" method="post" class="mt-4">
+        <form action="/escuela/students/update/{{ .id }}" method="post" class="mt-4">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" class="form-control" required value="{{ .alumno.Name }}">

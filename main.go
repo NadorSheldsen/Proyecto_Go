@@ -19,16 +19,10 @@ func main() {
 	db.AutoMigrate(&database.Alumnos{})
 	AlumnoService := services.NewAlumnoService(db)
 
-	// Inicialización del router
 	router := gin.Default()
 
-	// Sirve archivos estáticos como CSS o JS desde la carpeta 'static'
-	router.Static("/static", "./static")
-
-	// Carga las plantillas HTML
 	router.LoadHTMLGlob("vistas/*")
 
-	// Rutas
 	router.GET("/students/new", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "nuevo_estudiante.html", nil)
 	})
@@ -109,7 +103,7 @@ func main() {
 		}
 
 		alumno.Name = c.PostForm("nombre")
-		alumno.Group = c.PostForm("grupo")
+		alumno.Group = c.PostForm("grupo") // Asegúrate de que el nombre del campo coincida con el formulario HTML
 		alumno.Email = c.PostForm("email")
 
 		err = AlumnoService.UpdateAlumno(alumno)
@@ -121,6 +115,5 @@ func main() {
 		c.Redirect(http.StatusMovedPermanently, "/students")
 	})
 
-	// Inicia el servidor en el puerto 8000
 	router.Run(":8000")
 }

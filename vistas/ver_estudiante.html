@@ -7,10 +7,10 @@
     <p>Nombre: {{ .alumno.Name }}</p>
     <p>Grupo: {{ .alumno.Group }}</p>
     <p>Email: {{ .alumno.Email }}</p>
-    <form action="/bd/students/delete/{{ .alumno.ID }}" method="POST" style="display:inline">
+    <form action="/escuela/alumnos/delete/{{ .alumno.ID }}" method="POST" style="display:inline">
         <button type="submit">Eliminar</button>
     </form>
-    <a href="/students/act/{{ .alumno.ID }}">Actualizar</a>
-    <a href="/students">Volver</a>
+    <a href="/alumnos/act/{{ .alumno.ID }}">Actualizar</a>
+    <a href="/alumnos">Volver</a>
 </body>
 </html>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Materias</title>
-    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <h1>Lista de Materias</h1>
@@ -12,7 +11,7 @@
         {{ range .materias }}
         <li>
             <a href="/subjects/{{ .subject_id }}">{{ .subject_id }}: {{ .name }}</a>
-            <form action="/api/subjects/{{ .subject_id }}" method="post" style="display:inline">
+            <form action="/escuela/subjects/{{ .subject_id }}" method="post" style="display:inline">
                 <button type="submit">Eliminar</button>
             </form>
             <a href="/subjects/act/{{ .subject_id }}">Actualizar</a>
