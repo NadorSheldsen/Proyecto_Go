@@ -1,0 +1,21 @@
+<html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Calificación</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Eliminar Calificación</h1>
+        <p>¿Estás seguro de que deseas eliminar la calificación de <strong>{{ .student_id }}</strong> en la materia <strong>{{ .subject_id }}</strong>?</p>
+        
+        <form action="/escuela/grades/{{ .grade_id }}" method="post" class="mt-4">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="grade_id" value="{{ .grade_id }}">
+            <button type="submit" class="btn btn-danger btn-block">Eliminar Calificación</button>
+        </form>
+        <a href="/grades" class="btn btn-link mt-3">Volver a la Lista de Calificaciones</a>
+    </div>
+</body>
+</html>
