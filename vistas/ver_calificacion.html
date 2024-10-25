@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Calificación</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Ver Calificación</h1>
+    <p>ID de la Calificación: {{ .grade_id }}</p>
+    <p>ID del Estudiante: {{ .student_id }}</p>
+    <p>ID de la Materia: {{ .subject_id }}</p>
+    <p>Calificación: {{ .grade }}</p>
+    <form action="/api/grades/{{ .grade_id }}" method="post" style="display:inline">
+        <button type="submit">Eliminar</button>
+    </form>
+    <a href="/grades/act/{{ .grade_id }}">Actualizar</a>
+    <a href="/grades">Volver</a>
+</body>
+</html>
