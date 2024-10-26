@@ -50,13 +50,13 @@ func (a *alumnoService) GetAllAlumnos() ([]database.Alumnos, error) {
 	return alumnos, err.Error
 }
 
-<<<<<<< HEAD
 // Materias
 type MateriaService interface {
 	CreateMateria(materia database.Materias) error
 	UpdateMateria(materia database.Materias) error
 	DeleteMateria(id uint) error
 	GetMateriaByID(id uint) (database.Materias, error)
+	GetAllMaterias() ([]database.Materias, error)
 }
 
 type materiaService struct {
@@ -88,6 +88,12 @@ func (m *materiaService) GetMateriaByID(id uint) (database.Materias, error) {
 	return materia, err.Error
 }
 
+func (m *materiaService) GetAllMaterias() ([]database.Materias, error) {
+	var materias []database.Materias
+	err := m.db.Find(&materias).Error
+	return materias, err
+}
+
 // Calificaciones
 type CalificacionService interface {
 	CreateCalificacion(calificacion database.Calificaciones) error
@@ -95,7 +101,7 @@ type CalificacionService interface {
 	DeleteCalificacion(id uint) error
 	GetCalificacionByID(id uint) (database.Calificaciones, error)
 	GetCalificacionByGradeIDAndStudentID(gradeID, studentID uint) (database.Calificaciones, error)
-	GetCalificacionesByStudentID(studentID uint) ([]database.Calificaciones, error)
+	GetCalificacionesByStudentID(studentID uint) ([]database.CalificacionConDetalles, error)
 }
 
 type calificacionService struct {
@@ -133,95 +139,20 @@ func (c *calificacionService) GetCalificacionByGradeIDAndStudentID(gradeID, stud
 	return calificacion, err.Error
 }
 
-func (c *calificacionService) GetCalificacionesByStudentID(studentID uint) ([]database.Calificaciones, error) {
-	var calificaciones []database.Calificaciones
-	err := c.db.Where("student_id = ?", studentID).Find(&calificaciones)
-	return calificaciones, err.Error
-
-// Servicio de Materias
-type SubjectService interface {
-	CreateSubject(subject database.Subjects) error
-	UpdateSubject(subject database.Subjects) error
-	DeleteSubject(id int64) error
-	GetSubjectByID(id int64) (database.Subjects, error)
-	GetAllSubjects() ([]database.Subjects, error)
-}
-
-type subjectService struct {
-	db *gorm.DB
-}
-
-func NewSubjectService(db *gorm.DB) SubjectService {
-	return &subjectService{db}
-}
-
-func (s *subjectService) CreateSubject(subject database.Subjects) error {
-	err := s.db.Create(&subject)
-	return err.Error
-}
-
-func (s *subjectService) UpdateSubject(subject database.Subjects) error {
-	err := s.db.Save(&subject)
-	return err.Error
-}
-
-func (s *subjectService) DeleteSubject(id int64) error {
-	err := s.db.Delete(&database.Subjects{}, id)
-	return err.Error
-}
-
-func (s *subjectService) GetSubjectByID(id int64) (database.Subjects, error) {
-	var subject database.Subjects
-	err := s.db.First(&subject, id)
-	return subject, err.Error
-}
-
-func (s *subjectService) GetAllSubjects() ([]database.Subjects, error) {
-	var subjects []database.Subjects
-	err := s.db.Find(&subjects)
-	return subjects, err.Error
-}
-
-// Servicio de Calificaciones
-type GradeService interface {
-	CreateGrade(grade database.Grades) error
-	UpdateGrade(grade database.Grades) error
-	DeleteGrade(id int64) error
-	GetGradeByID(id int64) (database.Grades, error)
-	GetGradesByStudentID(studentID int64) ([]database.Grades, error)
-}
-
-type gradeService struct {
-	db *gorm.DB
-}
-
-func NewGradeService(db *gorm.DB) GradeService {
-	return &gradeService{db}
-}
-
-func (g *gradeService) CreateGrade(grade database.Grades) error {
-	err := g.db.Create(&grade)
-	return err.Error
-}
-
-func (g *gradeService) UpdateGrade(grade database.Grades) error {
-	err := g.db.Save(&grade)
-	return err.Error
-}
-
-func (g *gradeService) DeleteGrade(id int64) error {
-	err := g.db.Delete(&database.Grades{}, id)
-	return err.Error
-}
-
-func (g *gradeService) GetGradeByID(id int64) (database.Grades, error) {
-	var grade database.Grades
-	err := g.db.First(&grade, id)
-	return grade, err.Error
-}
-
-func (g *gradeService) GetGradesByStudentID(studentID int64) ([]database.Grades, error) {
-	var grades []database.Grades
-	err := g.db.Where("student_id = ?", studentID).Find(&grades)
-	return grades, err.Error
+/*
+	func (c *calificacionService) GetCalificacionesByStudentID(studentID uint) ([]database.Calificaciones, error) {
+		var calificaciones []database.Calificaciones
+		err := c.db.Where("student_id = ?", studentID).Find(&calificaciones)
+		return calificaciones, err.Error
+	}
+*/
+func (c *calificacionService) GetCalificacionesByStudentID(studentID uint) ([]database.CalificacionConDetalles, error) {
+	var calificaciones []database.CalificacionConDetalles
+	err := c.db.Table("grades").
+		Select("grades.grade_id, grades.student_id, grades.subject_id, grades.grade, subjects.name as subject_name, Alumnos.name as student_name").
+		Joins("left join subjects on grades.subject_id = subjects.subject_id").
+		Joins("left join Alumnos on grades.student_id = Alumnos.student_id").
+		Where("grades.student_id = ?", studentID).
+		Find(&calificaciones).Error
+	return calificaciones, err
 }

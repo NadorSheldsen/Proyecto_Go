@@ -1,19 +1,19 @@
 
-html>
+<html>
 <head>
     <title>Añadir Estudiante</title>
 </head>
 <body>
     <h1>Añadir Nuevo Estudiante</h1>
-    <form action="/escuela/alumnos" method="POST">
+    <form action="/escuela/students" method="POST">
         <label for="nombre">Nombre:</label><br>
         <input type="text" id="nombre" name="nombre"><br>
         <label for="grupo">Grupo:</label><br>
-        <input type="text" id="apellido" name="grupo"><br>
+        <input type="text" id="grupo" name="grupo"><br>
         <label for="email">Email:</label><br>
-        <input type="text" id="apellido" name="email"><br>
+        <input type="text" id="email" name="email"><br>
         <input type="submit" value="Crear">
     </form>
-    <a href="/alumnos">Volver</a>
+    <a href="/students">Volver</a>
 </body>
 </html>
