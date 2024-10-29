@@ -31,7 +31,7 @@ func main() {
 		c.HTML(http.StatusOK, "nuevo_estudiante.html", nil)
 	})
 
-	router.POST("/bd/students", func(c *gin.Context) {
+	router.POST("/escuela/students", func(c *gin.Context) {
 		nombre := c.PostForm("nombre")
 		grupo := c.PostForm("grupo")
 		email := c.PostForm("email")
@@ -40,6 +40,9 @@ func main() {
 		if err := db.Model(&database.Alumnos{}).Count(&count).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al contar los alumnos"})
 			return
+
+
+
 		}*/
 
 		nuevoAlumno := database.Alumnos{
@@ -77,7 +80,7 @@ func main() {
 		c.HTML(http.StatusOK, "ver_estudiante.html", gin.H{"alumno": alumno})
 	})
 
-	router.POST("/bd/students/delete/:student_id", func(c *gin.Context) {
+	router.POST("/escuela/students/delete/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
 
 		err := AlumnoService.DeleteAlumno(int64(id))
@@ -98,7 +101,7 @@ func main() {
 		c.HTML(http.StatusOK, "actualizar_estudiante.html", gin.H{"alumno": alumno, "id": id})
 	})
 
-	router.POST("/bd/students/update/:student_id", func(c *gin.Context) {
+	router.POST("/escuela/students/update/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
 		alumno, err := AlumnoService.GetAlumnoByID(int64(id))
 		if err != nil {
@@ -106,6 +109,7 @@ func main() {
 			return
 		}
 
+		alumno.Student_id = int64(id)
 		alumno.Name = c.PostForm("nombre")
 		alumno.Group = c.PostForm("grupo")
 		alumno.Email = c.PostForm("email")
@@ -137,7 +141,19 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Materia creada exitosamente"})
 	})
 
-	router.PUT("/escuela/subjects/:subject_id", func(c *gin.Context) {
+	router.GET("subjects/act/:subject_id", func(c *gin.Context) {
+		id, _ := strconv.Atoi(c.Param("subject_id"))
+		materia, err := MateriaService.GetMateriaByID(uint(id))
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Materia no encontrada"})
+			return
+		}
+
+		c.HTML(http.StatusOK, "actualizar_materia.html", gin.H{"materia": materia, "id": id})
+	})
+
+	router.POST("/escuela/subjects/:subject_id", func(c *gin.Context) {
+		//http://localhost:8000/escuela/subjects/1
 		id, _ := strconv.Atoi(c.Param("subject_id"))
 		materia, err := MateriaService.GetMateriaByID(uint(id))
 		if err != nil {
@@ -166,9 +182,23 @@ func main() {
 		c.HTML(http.StatusOK, "ver_materia.html", gin.H{"materia": materia})
 	})
 
-	router.DELETE("/escuela/subjects/:subject_id", func(c *gin.Context) {
-		id, _ := strconv.Atoi(c.Param("subject_id"))
-		err := MateriaService.DeleteMateria(uint(id))
+	router.GET("/subjects", func(c *gin.Context) {
+		materias, err := MateriaService.GetAllMaterias()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.HTML(http.StatusOK, "lista_materias.html", gin.H{"materias": materias})
+	})
+
+	router.POST("/subjects/delete/:subject_id", func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("subject_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "ID de materia inválido"})
+			return
+		}
+
+		err = MateriaService.DeleteMateria(uint(id))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -201,7 +231,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Calificación creada exitosamente"})
 	})
 
-	router.PUT("/grades/act/:grade_id", func(c *gin.Context) {
+	/*router.POST("/grades/act/:grade_id", func(c *gin.Context) {
 		gradeID, _ := strconv.Atoi(c.Param("grade_id"))
 		calificacion, err := CalificacionService.GetCalificacionByID(uint(gradeID))
 		if err != nil {
@@ -218,11 +248,61 @@ func main() {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Calificación actualizada exitosamente"})
+	})*/
+
+	router.GET("/grades/act/:grade_id", func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("grade_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "ID de calificación inválido"})
+			return
+		}
+
+		calificacion, err := CalificacionService.GetCalificacionByID(uint(id))
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Calificación no encontrada"})
+			return
+		}
+
+		c.HTML(http.StatusOK, "actualizar_calificacion.html", gin.H{"calificacion": calificacion, "id": id})
 	})
 
-	router.DELETE("/grades/delete/:grade_id", func(c *gin.Context) {
-		gradeID, _ := strconv.Atoi(c.Param("grade_id"))
-		err := CalificacionService.DeleteCalificacion(uint(gradeID))
+	router.POST("/grades/update/:grade_id", func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("grade_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "ID de calificación inválido"})
+			return
+		}
+
+		calificacion, err := CalificacionService.GetCalificacionByID(uint(id))
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Calificación no encontrada"})
+			return
+		}
+
+		gradeValue, err := strconv.ParseFloat(c.PostForm("grade"), 32)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Valor de calificación inválido"})
+			return
+		}
+
+		calificacion.Grade = float32(gradeValue)
+		err = CalificacionService.UpdateCalificacion(calificacion)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Calificación actualizada exitosamente"})
+	})
+
+	router.POST("/grades/delete/:grade_id", func(c *gin.Context) {
+		gradeID, err := strconv.Atoi(c.Param("grade_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "ID de calificación inválido"})
+			return
+		}
+
+		err = CalificacionService.DeleteCalificacion(uint(gradeID))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

@@ -4,7 +4,7 @@
 </head>
 <body>
     <h1>Lista de Estudiantes</h1>
-    <form action="/alumnos/" method="get" onsubmit="return redirectToStudent()">
+    <form action="/students/" method="get" onsubmit="return redirectToStudent()">
         <input type="text" placeholder="Buscar estudiante por ID" id="student_id" name="student_id" required>
         <button type="submit">Buscar</button>
     </form>
@@ -12,22 +12,22 @@
     <ul>
         {{ range .alumnos }}
         <li>
-            <a href="/alumnos/{{ .ID }}">{{ .ID }}: {{ .Name }} {{ .Group }} {{ .Email }}</a>
-            <form action="/escuela/alumnos/delete/{{ .ID }}" method="POST" style="display:inline">
+            <a href="/students/{{ .Student_id }}">{{ .Student_id }}: {{ .Name }} {{ .Group }} {{ .Email }}</a>
+            <form action="/escuela/students/delete/{{ .Student_id }}" method="POST" style="display:inline">
                 <button type="submit">Eliminar</button>
             </form>
-            <a href="/alumnos/act/{{ .ID }}">Actualizar</a>
+            <a href="/students/act/{{ .Student_id }}">Actualizar</a>
         </li>
         {{ else }}
         <li>No hay estudiantes registrados.</li>
         {{ end }}
     </ul>
-    <a href="/alumnos/new">Crear Nuevo Estudiante</a>
+    <a href="/students/new">Crear Nuevo Estudiante</a>
 
     <script>
         function redirectToStudent() {
             var studentId = document.getElementById("student_id").value;
-            window.location.href = "/alumnos/" + studentId;
+            window.location.href = "/students/" + studentId;
             return false; 
         }
     </script>

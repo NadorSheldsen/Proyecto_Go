@@ -3,26 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Calificaciones del Estudiante</title>
-</head>
-<body>
-    <h1>Calificaciones del Estudiante ID: {{ .student_id }}</h1>
-    <ul>
-        {{ range .grades }}
-        <li>
-            ID de Calificación: {{ .GradeID }} - Materia ID: {{ .SubjectID }} - Calificación: {{ .Grade }}
-            <form action="/escuela/grades/{{ .GradeID }}" method="post" style="display:inline">
-                <button type="submit">Eliminar</button>
-            </form>
-            <a href="/grades/act/{{ .GradeID }}">Actualizar</a>
-        </li>
-        {{ else }}
-        <li>No hay calificaciones registradas para este estudiante.</li>
-        {{ end }}
-    </ul>
-    <a href="/grades/new">Crear Nueva Calificación</a>
-
     <title>Lista de Materias</title>
 </head>
 <body>
@@ -30,11 +10,11 @@
     <ul>
         {{ range .materias }}
         <li>
-            <a href="/subjects/{{ .subject_id }}">{{ .subject_id }}: {{ .name }}</a>
-            <form action="/escuela/subjects/{{ .subject_id }}" method="post" style="display:inline">
+            ID de Materia: {{ .SubjectID }} - Nombre: {{ .Name }}
+            <form action="subjects/delete/{{ .SubjectID }}" method="post" style="display:inline">
+                <input type="hidden" name="_method" value="DELETE">
                 <button type="submit">Eliminar</button>
-            </form>
-            <a href="/subjects/act/{{ .subject_id }}">Actualizar</a>
+            <a href="/subjects/act/{{ .SubjectID }}">Actualizar</a>
         </li>
         {{ else }}
         <li>No hay materias registradas.</li>
@@ -42,4 +22,3 @@
     </ul>
     <a href="/subjects/new">Crear Nueva Materia</a>
 </body>
-</html>

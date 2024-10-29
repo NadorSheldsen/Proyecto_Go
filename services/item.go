@@ -53,6 +53,7 @@ type MateriaService interface {
 	UpdateMateria(materia database.Materias) error
 	DeleteMateria(id uint) error
 	GetMateriaByID(id uint) (database.Materias, error)
+	GetAllMaterias() ([]database.Materias, error)
 }
 
 type materiaService struct {
@@ -88,7 +89,7 @@ type CalificacionService interface {
 	DeleteCalificacion(id uint) error
 	GetCalificacionByID(id uint) (database.Calificaciones, error)
 	GetCalificacionByGradeIDAndStudentID(gradeID, studentID uint) (database.Calificaciones, error)
-	GetCalificacionesByStudentID(studentID uint) ([]database.Calificaciones, error)
+	GetCalificacionesByStudentID(studentID uint) ([]database.CalificacionConDetalles, error)
 }
 
 type calificacionService struct {
