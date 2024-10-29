@@ -69,7 +69,7 @@ func main() {
 
 	router.GET("/students/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
-		alumno, err := AlumnoService.GetAlumnoByID(uint(id))
+		alumno, err := AlumnoService.GetAlumnoByID(int64(id))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -80,7 +80,7 @@ func main() {
 	router.POST("/bd/students/delete/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
 
-		err := AlumnoService.DeleteAlumno(uint(id))
+		err := AlumnoService.DeleteAlumno(int64(id))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -90,7 +90,7 @@ func main() {
 
 	router.GET("/students/act/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
-		alumno, err := AlumnoService.GetAlumnoByID(uint(id))
+		alumno, err := AlumnoService.GetAlumnoByID(int64(id))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -100,14 +100,14 @@ func main() {
 
 	router.POST("/bd/students/update/:student_id", func(c *gin.Context) {
 		id, _ := strconv.Atoi(c.Param("student_id"))
-		alumno, err := AlumnoService.GetAlumnoByID(uint(id))
+		alumno, err := AlumnoService.GetAlumnoByID(int64(id))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
 		alumno.Name = c.PostForm("nombre")
-		alumno.Group = c.PostForm("grupo") // Asegúrate de que el nombre del campo coincida con el formulario HTML
+		alumno.Group = c.PostForm("grupo")
 		alumno.Email = c.PostForm("email")
 
 		err = AlumnoService.UpdateAlumno(alumno)
